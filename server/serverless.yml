@@ -1,0 +1,29 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: devcademy
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: aws-practice
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: notes-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-central-1
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: "*"
+          # cors: true
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 8000
